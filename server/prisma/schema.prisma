@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  boards    Board[]
+  comments  Comment[]
+}
+
+model Board {
+  id        Int      @id @default(autoincrement())
+  title     String
+  color     String   @default("#0052cc")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  columns   Column[]
+  labels    Label[]
+}
+
+model Column {
+  id        Int      @id @default(autoincrement())
+  title     String
+  position  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  boardId   Int
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards     Card[]
+}
+
+model Card {
+  id          Int           @id @default(autoincrement())
+  title       String
+  description String?       @db.Text
+  position    Int
+  dueDate     DateTime?
+  archived    Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  columnId    Int
+  column      Column        @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  labels      CardLabel[]
+  comments    Comment[]
+  activity    Activity[]
+}
+
+model Label {
+  id      Int         @id @default(autoincrement())
+  name    String
+  color   String
+  boardId Int
+  board   Board       @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards   CardLabel[]
+}
+
+model CardLabel {
+  cardId  Int
+  labelId Int
+  card    Card  @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  label   Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([cardId, labelId])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  body      String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  cardId    Int
+  userId    Int
+  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Activity {
+  id        Int      @id @default(autoincrement())
+  action    String
+  detail    String?
+  createdAt DateTime @default(now())
+  cardId    Int
+  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
