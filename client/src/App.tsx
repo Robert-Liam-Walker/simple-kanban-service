@@ -3,7 +3,7 @@ import { useAuth } from "./hooks/useAuth";
 import LoginPage from "./pages/LoginPage";
 import BoardsPage from "./pages/BoardsPage";
 import BoardPage from "./pages/BoardPage";
-import { User } from "./api/types";
+import type { User } from "./api/types";
 
 export default function App() {
   const { user, loading, setUser, logout } = useAuth();

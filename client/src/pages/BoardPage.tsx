@@ -2,14 +2,16 @@ import { useEffect, useState, KeyboardEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   DndContext,
-  DragEndEvent,
-  DragOverEvent,
   DragOverlay,
-  DragStartEvent,
   PointerSensor,
   useSensor,
   useSensors,
   closestCorners,
+} from "@dnd-kit/core";
+import type {
+  DragEndEvent,
+  DragOverEvent,
+  DragStartEvent,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -20,7 +22,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { api } from "../api/client";
-import { Board, Card, Column, Label, User } from "../api/types";
+import type { Board, Card, Column, Label, User } from "../api/types";
 import CardModal from "../components/CardModal";
 
 // ---------- Draggable Card ----------

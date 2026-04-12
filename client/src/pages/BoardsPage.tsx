@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api/client";
-import { BoardSummary, User } from "../api/types";
+import type { BoardSummary, User } from "../api/types";
 
 const BOARD_COLORS = [
   "#0052cc", "#00875a", "#de350b", "#6554c0", "#ff8b00",

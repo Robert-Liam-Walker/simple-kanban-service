@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
 import { api } from "../api/client";
-import { User } from "../api/types";
+import type { User } from "../api/types";
 
 interface Props {
   onLogin: (user: User) => void;
