@@ -28,7 +28,7 @@ await app.register(cors, {
 
 await app.register(cookie);
 await app.register(session, {
-  secret: process.env.SESSION_SECRET ?? "panini-dev-secret-changeme",
+  secret: process.env.SESSION_SECRET ?? "panini-dev-secret-changeme-32chars!",
   cookie: {
     secure: process.env.NODE_ENV === "production",
     httpOnly: true,

@@ -1,6 +1,6 @@
 import { useEffect, useState, KeyboardEvent } from "react";
 import { api } from "../api/client";
-import { Card, Comment, Label } from "../api/types";
+import type { Card, Comment, Label } from "../api/types";
 
 interface Props {
   cardId: number;
