@@ -42,8 +42,8 @@ export default function CardModal({ cardId, boardLabels, onClose, onUpdated }: P
         description: description || null,
         dueDate: dueDate || null,
       });
-      setCard(updated);
       onUpdated(updated);
+      onClose();
     } finally {
       setSaving(false);
     }
@@ -94,7 +94,8 @@ export default function CardModal({ cardId, boardLabels, onClose, onUpdated }: P
     );
   }
 
-  const isOverdue = card.dueDate && new Date(card.dueDate) < new Date() && !card.archived;
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const isOverdue = card.dueDate && card.dueDate.slice(0, 10) < todayStr && !card.archived;
 
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
