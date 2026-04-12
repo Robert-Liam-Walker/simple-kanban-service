@@ -424,7 +424,7 @@ export default function BoardPage({ user }: { user: User }) {
       </nav>
 
       {/* Board */}
-      <div className="flex-1 overflow-x-auto px-6 py-6">
+      <div className="flex-1 overflow-x-auto px-6 py-6 flex justify-center">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}
@@ -432,6 +432,7 @@ export default function BoardPage({ user }: { user: User }) {
           onDragOver={onDragOver}
           onDragEnd={onDragEnd}
         >
+          <div className="flex items-start gap-4 min-w-max mx-auto w-fit">
           <SortableContext
             items={board.columns.map((c) => `col-${c.id}`)}
             strategy={horizontalListSortingStrategy}
@@ -467,47 +468,49 @@ export default function BoardPage({ user }: { user: User }) {
                   );
                 })}
 
-              {/* Add column */}
-              <div className="w-64 flex-shrink-0">
-                {addingCol ? (
-                  <div className="bg-gray-100 rounded-xl p-3">
-                    <input
-                      autoFocus
-                      className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 mb-2"
-                      placeholder="Column title"
-                      value={newColTitle}
-                      onChange={(e) => setNewColTitle(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") addColumn();
-                        if (e.key === "Escape") { setAddingCol(false); setNewColTitle(""); }
-                      }}
-                    />
-                    <div className="flex gap-1">
-                      <button
-                        onClick={addColumn}
-                        className="text-xs bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition"
-                      >
-                        Add Column
-                      </button>
-                      <button
-                        onClick={() => { setAddingCol(false); setNewColTitle(""); }}
-                        className="text-xs text-gray-500 hover:text-gray-800 px-2 py-1 transition"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setAddingCol(true)}
-                    className="w-full bg-white/60 hover:bg-white/90 text-gray-600 text-sm font-medium py-3 rounded-xl transition border border-dashed border-gray-300"
-                  >
-                    + Add column
-                  </button>
-                )}
-              </div>
             </div>
           </SortableContext>
+
+          {/* Add column — outside centered group, sits to the right */}
+          <div className="w-64 flex-shrink-0">
+            {addingCol ? (
+              <div className="bg-gray-100 rounded-xl p-3">
+                <input
+                  autoFocus
+                  className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 mb-2"
+                  placeholder="Column title"
+                  value={newColTitle}
+                  onChange={(e) => setNewColTitle(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") addColumn();
+                    if (e.key === "Escape") { setAddingCol(false); setNewColTitle(""); }
+                  }}
+                />
+                <div className="flex gap-1">
+                  <button
+                    onClick={addColumn}
+                    className="text-xs bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition"
+                  >
+                    Add Column
+                  </button>
+                  <button
+                    onClick={() => { setAddingCol(false); setNewColTitle(""); }}
+                    className="text-xs text-gray-500 hover:text-gray-800 px-2 py-1 transition"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => setAddingCol(true)}
+                className="w-full bg-white/60 hover:bg-white/90 text-gray-600 text-sm font-medium py-3 rounded-xl transition border border-dashed border-gray-300"
+              >
+                + Add column
+              </button>
+            )}
+          </div>
+          </div>
 
           <DragOverlay>
             {activeCard && (
