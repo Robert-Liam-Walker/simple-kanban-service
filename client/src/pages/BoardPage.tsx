@@ -37,7 +37,8 @@ function SortableCard({
     id: `card-${card.id}`,
   });
   const style = { transform: CSS.Transform.toString(transform), transition };
-  const isOverdue = card.dueDate && new Date(card.dueDate) < new Date();
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const isOverdue = card.dueDate && card.dueDate.slice(0, 10) < todayStr;
 
   return (
     <div
