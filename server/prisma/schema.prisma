@@ -45,6 +45,7 @@ model Card {
   description String?       @db.Text
   position    Int
   dueDate     DateTime?
+  priority    String?
   archived    Boolean       @default(false)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt

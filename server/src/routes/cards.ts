@@ -43,14 +43,20 @@ export async function cardRoutes(app: FastifyInstance) {
     const id = parseInt((req.params as { id: string }).id);
     const card = await getCardWithOwner(id, req.session.userId!);
     if (!card) return reply.status(404).send({ error: "Card not found" });
-    const { title, description, dueDate } = req.body as {
+    const { title, description, dueDate, priority } = req.body as {
       title?: string;
       description?: string;
       dueDate?: string | null;
+      priority?: "LOW" | "MED" | "HIGH" | null;
     };
     const updated = await prisma.card.update({
       where: { id },
-      data: { title, description, dueDate: dueDate ? new Date(dueDate) : dueDate === null ? null : undefined },
+      data: {
+        title,
+        description,
+        dueDate: dueDate ? new Date(dueDate) : dueDate === null ? null : undefined,
+        priority: priority === undefined ? undefined : priority,
+      },
     });
     await prisma.activity.create({ data: { cardId: id, action: "updated" } });
     return reply.send(updated);

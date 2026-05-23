@@ -34,6 +34,7 @@ export interface Card {
   description: string | null;
   position: number;
   dueDate: string | null;
+  priority: "LOW" | "MED" | "HIGH" | null;
   archived: boolean;
   columnId: number;
   labels: CardLabel[];
