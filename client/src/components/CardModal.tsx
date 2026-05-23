@@ -14,6 +14,7 @@ export default function CardModal({ cardId, boardLabels, onClose, onUpdated }: P
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [priority, setPriority] = useState<"LOW" | "MED" | "HIGH" | null>(null);
   const [commentBody, setCommentBody] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -23,6 +24,7 @@ export default function CardModal({ cardId, boardLabels, onClose, onUpdated }: P
       setTitle(c.title);
       setDescription(c.description ?? "");
       setDueDate(c.dueDate ? c.dueDate.slice(0, 10) : "");
+      setPriority(c.priority ?? null);
     });
   }, [cardId]);
 
@@ -41,12 +43,20 @@ export default function CardModal({ cardId, boardLabels, onClose, onUpdated }: P
         title,
         description: description || null,
         dueDate: dueDate || null,
+        priority,
       });
       onUpdated(updated);
       onClose();
     } finally {
       setSaving(false);
     }
+  };
+
+  const setPriorityAndSave = async (next: "LOW" | "MED" | "HIGH" | null) => {
+    setPriority(next);
+    const updated = await api.patch<Card>(`/cards/${cardId}`, { priority: next });
+    setCard((c) => (c ? { ...c, priority: updated.priority } : c));
+    onUpdated(updated);
   };
 
   const toggleLabel = async (labelId: number) => {
@@ -133,6 +143,29 @@ export default function CardModal({ cardId, boardLabels, onClose, onUpdated }: P
               onBlur={save}
             />
             {isOverdue && <span className="ml-2 text-xs text-red-500">Overdue</span>}
+          </div>
+
+          {/* Priority */}
+          <div className="mb-4">
+            <label className="block text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide">Priority</label>
+            <div className="flex gap-1.5">
+              {(["LOW", "MED", "HIGH"] as const).map((p) => {
+                const active = priority === p;
+                const color =
+                  p === "LOW" ? "bg-gray-400" : p === "MED" ? "bg-yellow-500" : "bg-red-500";
+                return (
+                  <button
+                    key={p}
+                    onClick={() => setPriorityAndSave(active ? null : p)}
+                    className={`px-2.5 py-1 rounded-full text-xs font-medium text-white transition ${color} ${
+                      active ? "" : "opacity-40"
+                    }`}
+                  >
+                    {p}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Labels */}

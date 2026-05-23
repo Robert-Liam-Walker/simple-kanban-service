@@ -64,7 +64,22 @@ function SortableCard({
           ))}
         </div>
       )}
-      <p className="text-sm text-gray-800 font-medium leading-snug">{card.title}</p>
+      <div className="flex items-start gap-2">
+        <p className="flex-1 text-sm text-gray-800 font-medium leading-snug">{card.title}</p>
+        {card.priority && (
+          <span
+            className={`shrink-0 px-1.5 py-0.5 rounded-full text-[10px] font-semibold text-white leading-none mt-0.5 ${
+              card.priority === "LOW"
+                ? "bg-gray-400"
+                : card.priority === "MED"
+                ? "bg-yellow-500"
+                : "bg-red-500"
+            }`}
+          >
+            {card.priority}
+          </span>
+        )}
+      </div>
       {card.dueDate && (
         <p className={`text-xs mt-1 ${isOverdue ? "text-red-500" : "text-gray-400"}`}>
           {isOverdue ? "⚠ " : ""}
