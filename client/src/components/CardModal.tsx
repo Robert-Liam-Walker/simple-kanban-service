@@ -1,4 +1,4 @@
-import { useEffect, useState, KeyboardEvent } from "react";
+import { useEffect, useState, type KeyboardEvent } from "react";
 import { api } from "../api/client";
 import type { Card, Comment, Label } from "../api/types";
 

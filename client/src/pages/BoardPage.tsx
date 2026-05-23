@@ -1,4 +1,4 @@
-import { useEffect, useState, KeyboardEvent } from "react";
+import { useEffect, useState, type KeyboardEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   DndContext,
@@ -22,7 +22,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { api } from "../api/client";
-import type { Board, Card, Column, Label, User } from "../api/types";
+import type { Board, Card, Column, User } from "../api/types";
 import CardModal from "../components/CardModal";
 
 // ---------- Draggable Card ----------
@@ -78,7 +78,6 @@ function SortableCard({
 // ---------- Draggable Column ----------
 function SortableColumn({
   column,
-  boardLabels,
   onCardClick,
   onAddCard,
   onRenameColumn,
@@ -86,7 +85,6 @@ function SortableColumn({
   activeCardId,
 }: {
   column: Column;
-  boardLabels: Label[];
   onCardClick: (id: number) => void;
   onAddCard: (columnId: number, title: string) => void;
   onRenameColumn: (id: number, title: string) => void;
@@ -236,7 +234,7 @@ export default function BoardPage({ user }: { user: User }) {
   const [board, setBoard] = useState<Board | null>(null);
   const [openCardId, setOpenCardId] = useState<number | null>(null);
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
-  const [activeColId, setActiveColId] = useState<number | null>(null);
+  const [, setActiveColId] = useState<number | null>(null);
   const [addingCol, setAddingCol] = useState(false);
   const [newColTitle, setNewColTitle] = useState("");
   const [searchQ, setSearchQ] = useState("");
@@ -459,7 +457,6 @@ export default function BoardPage({ user }: { user: User }) {
                     <SortableColumn
                       key={col.id}
                       column={filteredCol}
-                      boardLabels={board.labels}
                       onCardClick={setOpenCardId}
                       onAddCard={addCard}
                       onRenameColumn={renameColumn}
