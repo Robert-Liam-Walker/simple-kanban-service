@@ -84,6 +84,12 @@ export default function CardModal({ cardId, boardLabels, onClose, onUpdated }: P
     onClose();
   };
 
+  const deleteCard = async () => {
+    if (!confirm("Delete this card? This can't be undone.")) return;
+    await api.delete(`/cards/${cardId}`);
+    onClose();
+  };
+
   if (!card) {
     return (
       <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
@@ -218,6 +224,12 @@ export default function CardModal({ cardId, boardLabels, onClose, onUpdated }: P
               className="text-sm text-gray-400 hover:text-red-500 transition"
             >
               Archive card
+            </button>
+            <button
+              onClick={deleteCard}
+              className="text-sm text-gray-400 hover:text-red-500 transition"
+            >
+              Delete card
             </button>
           </div>
         </div>
