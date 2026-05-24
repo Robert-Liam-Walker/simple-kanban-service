@@ -30,7 +30,7 @@ export default function LoginPage({ onLogin }: Props) {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="bg-white rounded-2xl shadow-md p-8 w-full max-w-sm">
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Panini</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-1">Simple Kanban Service</h1>
         <p className="text-gray-500 text-sm mb-6">Your personal Kanban board</p>
 
         <div className="flex gap-2 mb-6">

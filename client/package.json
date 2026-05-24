@@ -1,5 +1,5 @@
 {
-  "name": "@panini/client",
+  "name": "@simple-kanban-service/client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
