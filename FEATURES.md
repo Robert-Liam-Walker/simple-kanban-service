@@ -1,4 +1,4 @@
-# Panini — Feature Tracker
+# Simple Kanban Service — Feature Tracker
 
 This file tracks all planned, in-progress, and completed features.
 Codex agents: treat each item as a discrete task. Status markers are `[ ]` (todo), `[~]` (in progress), `[x]` (done).

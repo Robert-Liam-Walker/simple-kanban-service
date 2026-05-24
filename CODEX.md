@@ -1,4 +1,4 @@
-# Panini — Codex Handoff Document
+# Simple Kanban Service — Codex Handoff Document
 
 This document gives any AI agent (Codex, Claude, etc.) full context to continue development from any point.
 
@@ -6,18 +6,18 @@ This document gives any AI agent (Codex, Claude, etc.) full context to continue 
 
 ## What This Is
 
-Panini is a local-first Kanban board web app. Single user, runs locally on macOS, deployable to EC2.
+Simple Kanban Service is a local-first Kanban board web app. Single user, runs locally on macOS, deployable to EC2.
 
 **Stack:** Fastify (TypeScript) backend + React/Vite (TypeScript) frontend + MySQL via Prisma ORM + Tailwind CSS + @dnd-kit drag-and-drop.
 
-**Repo:** https://github.com/Robert-Liam-Walker/panini
+**Repo:** https://github.com/Robert-Liam-Walker/simple-kanban-service
 
 ---
 
 ## Directory Structure
 
 ```
-panini/
+simple-kanban-service/
   server/                    # Fastify API server
     src/
       index.ts               # App entry, registers all plugins + routes
@@ -68,8 +68,8 @@ panini/
 
 - **Engine:** MySQL (two MySQL instances on this machine — use the Homebrew one)
 - **Port:** 3307 (Homebrew MySQL, to avoid conflict with Oracle MySQL on 3306)
-- **DB name:** `panini`
-- **User:** `panini` / `panini`
+- **DB name:** `simple_kanban_service`
+- **User:** `simple_kanban_service` / `simple_kanban_service`
 - **Socket:** `/tmp/mysql_brew.sock`
 - **Root password:** `root` (Homebrew MySQL only)
 
@@ -89,7 +89,7 @@ port = 3307
 socket = /tmp/mysql_brew.sock
 ```
 
-To check if it's running: `mysql --socket=/tmp/mysql_brew.sock -u panini -ppanini panini -e "SELECT 1"`
+To check if it's running: `mysql --socket=/tmp/mysql_brew.sock -u simple_kanban_service -psimple_kanban_service simple_kanban_service -e "SELECT 1"`
 
 If not running, start it: `mysqld --defaults-file=/opt/homebrew/etc/my.cnf --datadir=/opt/homebrew/var/mysql --user=liamwalker --daemonize`
 
@@ -98,7 +98,7 @@ If not running, start it: `mysqld --defaults-file=/opt/homebrew/etc/my.cnf --dat
 ## Running the App
 
 ```bash
-cd ~/Documents/Development/panini
+cd ~/Documents/Development/simple-kanban-service
 
 # 1. Make sure Homebrew MySQL is running (check above)
 
@@ -118,8 +118,8 @@ npm run dev --workspace=client    # port 5173 (proxies /api to 3000)
 
 `.env` (in project root, loaded by server via `process.env`):
 ```
-DATABASE_URL=mysql://panini:panini@localhost:3307/panini
-SESSION_SECRET=panini-local-dev-secret-changeme-in-production
+DATABASE_URL=mysql://simple_kanban_service:simple_kanban_service@localhost:3307/simple_kanban_service
+SESSION_SECRET=<generated-random-string>
 PORT=3000
 NODE_ENV=development
 ```
@@ -127,7 +127,7 @@ NODE_ENV=development
 The server reads `.env` via `tsx` (which auto-loads .env). For migrations:
 ```bash
 cd server
-DATABASE_URL=mysql://panini:panini@localhost:3307/panini npx prisma migrate dev --name <name>
+DATABASE_URL=mysql://simple_kanban_service:simple_kanban_service@localhost:3307/simple_kanban_service npx prisma migrate dev --name <name>
 ```
 
 ---

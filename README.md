@@ -1,4 +1,4 @@
-# Panini
+# Simple Kanban Service
 
 A local-first Kanban board web application built with TypeScript, Fastify, React, and MySQL. Designed to run on macOS and easily deployable to Amazon EC2.
 
@@ -27,14 +27,14 @@ A local-first Kanban board web application built with TypeScript, Fastify, React
 brew install mysql
 brew services start mysql
 mysql_secure_installation
-mysql -u root -p -e "CREATE DATABASE panini; CREATE USER 'panini'@'localhost' IDENTIFIED BY 'yourpassword'; GRANT ALL PRIVILEGES ON panini.* TO 'panini'@'localhost'; FLUSH PRIVILEGES;"
+mysql -u root -p -e "CREATE DATABASE simple_kanban_service; CREATE USER 'simple_kanban_service'@'localhost' IDENTIFIED BY 'yourpassword'; GRANT ALL PRIVILEGES ON simple_kanban_service.* TO 'simple_kanban_service'@'localhost'; FLUSH PRIVILEGES;"
 ```
 
 ### Install & Run
 
 ```bash
-git clone https://github.com/Robert-Liam-Walker/panini.git
-cd panini
+git clone https://github.com/Robert-Liam-Walker/simple-kanban-service.git
+cd simple-kanban-service
 cp .env.example .env
 # Edit .env with your DB credentials
 npm install
@@ -47,7 +47,7 @@ App runs at `http://localhost:3000`
 ## Project Structure
 
 ```
-panini/
+simple-kanban-service/
   server/          # Fastify API
     src/
       routes/      # boards, columns, cards, labels, comments, auth
@@ -69,7 +69,7 @@ panini/
 1. Launch an Amazon Linux 2 or Ubuntu 22.04 AMI (t3.micro or larger)
 2. Install Node.js 18, MySQL 8, and git
 3. Clone the repo, copy `.env`, run `npm install && npm run build`
-4. Use `pm2` to keep the server running: `pm2 start npm --name panini -- run start`
+4. Use `pm2` to keep the server running: `pm2 start npm --name simple-kanban-service -- run start`
 5. Open port 3000 (or 80 via nginx reverse proxy) in your EC2 security group
 6. Point your MySQL connection string to `localhost` (same instance) or an RDS endpoint
 
@@ -78,7 +78,7 @@ panini/
 See `.env.example` for all required variables.
 
 ```
-DATABASE_URL=mysql://panini:password@localhost:3306/panini
+DATABASE_URL=mysql://simple_kanban_service:password@localhost:3306/simple_kanban_service
 SESSION_SECRET=changeme
 PORT=3000
 NODE_ENV=development
