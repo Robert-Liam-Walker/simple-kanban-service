@@ -31,6 +31,7 @@ simple-kanban-service/
         labels.ts            # /api/boards/:id/labels + /api/labels/:id
         comments.ts          # /api/cards/:id/comments + /api/comments/:id
         search.ts            # /api/search?q=
+        admin.ts             # /api/admin/* token-protected (ADMIN_TOKEN); used by sibling projects to seed boards/cards for a named user
     prisma/
       schema.prisma          # DB schema — User, Board, Column, Card, Label, CardLabel, Comment, Activity
       migrations/            # Prisma migrations (applied, do not edit)
@@ -172,4 +173,39 @@ curl -b cookies.txt -X POST http://localhost:3000/api/boards \
 
 # List boards
 curl -b cookies.txt http://localhost:3000/api/boards
+```
+
+---
+
+## Admin API
+
+The admin routes in `server/src/routes/admin.ts` bypass session auth and are
+protected by a bearer token. They exist so external scripts and sibling
+projects can seed boards for a named user without managing a logged-in
+cookie. When `ADMIN_TOKEN` is unset in the env, every admin route returns
+503 — there is no insecure fallback.
+
+Endpoints:
+
+- `GET /api/admin/users` — list users (id, username, createdAt, board count).
+- `GET /api/admin/users/:username/boards` — list boards for a named user.
+- `POST /api/admin/boards/seed` — create a board for a named user and
+  (optionally) populate cards into columns referenced by title. Default
+  columns ("To Do", "In Progress", "Done") are created automatically.
+  Set `reuseExisting: true` to append cards to a board with the same
+  title instead of creating a duplicate.
+
+```bash
+# Set ADMIN_TOKEN=<long-random-string> in .env, restart the server, then:
+curl -X POST http://localhost:3000/api/admin/boards/seed \
+  -H "Authorization: Bearer $ADMIN_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "panini",
+    "title": "My Project",
+    "color": "#1d4ed8",
+    "cards": [
+      { "columnTitle": "To Do", "title": "First task", "description": "..." }
+    ]
+  }'
 ```
