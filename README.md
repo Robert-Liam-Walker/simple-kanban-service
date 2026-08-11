@@ -4,6 +4,8 @@ A self-hosted Kanban board: boards, columns, drag-and-drop cards, labels, due da
 
 **Live:** [simplekanbansvc.com](https://simplekanbansvc.com)
 
+![A board with To Do, In Progress, and Done columns. Cards carry colored labels, priority chips, and due dates, with one overdue date flagged in red.](docs/screenshots/board.png)
+
 ## About
 
 Simple Kanban Service is a small, complete web application built to be run by one person on one server. It covers the whole path from schema to UI: a relational data model in Prisma/MySQL, a Fastify REST API with session auth, and a React single-page client with drag-and-drop board interactions.
@@ -22,9 +24,13 @@ Points of interest for anyone reading the code:
 
 **Boards.** Create, rename, recolor, and delete boards. New boards come with To Do / In Progress / Done. Board list renders as a grid of color tiles.
 
+![The boards list: four colored board tiles, each labeled with its name and column count.](docs/screenshots/boards.png)
+
 **Columns.** Add, rename inline (double-click the header), reorder by dragging, delete with cascade.
 
 **Cards.** Create, edit, archive, delete. Drag between columns and reorder within a column (dnd-kit, with a drag overlay). Detail modal covers description, labels, priority (low/medium/high), due date, and comments. Overdue due dates highlight red.
+
+![The card detail modal, showing due date, priority selector, label toggles, description, and a comment thread.](docs/screenshots/card-modal.png)
 
 **Labels.** Per-board labels with names and colors, toggled per card, shown as chips on card previews.
 
