@@ -19,7 +19,10 @@ declare module "@fastify/session" {
   }
 }
 
-const app = Fastify({ logger: true });
+// trustProxy makes Fastify read X-Forwarded-Proto from the reverse proxy.
+// Without it the app sees plain HTTP behind nginx, and @fastify/session
+// refuses to set a Secure cookie, so sessions silently fail to persist.
+const app = Fastify({ logger: true, trustProxy: true });
 
 await app.register(cors, {
   origin: process.env.NODE_ENV === "production" ? false : "http://localhost:5173",
