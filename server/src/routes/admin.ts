@@ -84,6 +84,31 @@ export async function adminRoutes(app: FastifyInstance) {
     return reply.send(updated);
   });
 
+  app.get("/api/admin/boards/:id", { preHandler: requireAdmin }, async (req, reply) => {
+    const id = parseInt((req.params as { id: string }).id);
+    if (!Number.isFinite(id)) return reply.status(400).send({ error: "Invalid board id" });
+    const board = await prisma.board.findUnique({
+      where: { id },
+      include: {
+        columns: {
+          orderBy: { position: "asc" },
+          include: { cards: { orderBy: { position: "asc" } } },
+        },
+      },
+    });
+    if (!board) return reply.status(404).send({ error: "Board not found" });
+    return reply.send(board);
+  });
+
+  app.delete("/api/admin/cards/:id", { preHandler: requireAdmin }, async (req, reply) => {
+    const id = parseInt((req.params as { id: string }).id);
+    if (!Number.isFinite(id)) return reply.status(400).send({ error: "Invalid card id" });
+    const card = await prisma.card.findUnique({ where: { id } });
+    if (!card) return reply.status(404).send({ error: "Card not found" });
+    await prisma.card.delete({ where: { id } });
+    return reply.send({ deleted: id, title: card.title });
+  });
+
   app.get("/api/admin/users", { preHandler: requireAdmin }, async (_req, reply) => {
     const users = await prisma.user.findMany({
       select: { id: true, username: true, createdAt: true, _count: { select: { boards: true } } },
