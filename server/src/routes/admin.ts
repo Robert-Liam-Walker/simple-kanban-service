@@ -24,7 +24,16 @@ type SeedCard = {
   description?: string;
   priority?: string;
   position?: number;
+  dueDate?: string;
 };
+
+function parseSeedDueDate(value: string | undefined): Date | undefined {
+  if (!value) return undefined;
+  const raw = /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T12:00:00.000Z` : value;
+  const parsed = new Date(raw);
+  if (Number.isNaN(parsed.getTime())) throw new Error(`Invalid dueDate '${value}'`);
+  return parsed;
+}
 
 type SeedBody = {
   username: string;
@@ -141,11 +150,18 @@ export async function adminRoutes(app: FastifyInstance) {
           orderBy: { position: "desc" },
         });
         const position = c.position ?? (last?.position ?? -1) + 1;
+        let dueDate: Date | undefined;
+        try {
+          dueDate = parseSeedDueDate(c.dueDate);
+        } catch (err) {
+          return reply.status(400).send({ error: (err as Error).message });
+        }
         const card = await prisma.card.create({
           data: {
             title: c.title,
             description: c.description,
             priority: c.priority,
+            dueDate,
             position,
             columnId: col.id,
           },
